@@ -135,8 +135,8 @@ export class nivel2 extends Phaser.Scene{
         //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
         this.stars = this.physics.add.group({
             key: 'star',
-            repeat: 11,
-            setXY: { x: 12, y: 5, stepX: 70 }
+            repeat: 32,
+            setXY: { x: 12, y: 5, stepX: 80 }
         });
 
         this.finale = this.physics.add.group({
