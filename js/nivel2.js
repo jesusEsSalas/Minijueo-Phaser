@@ -1,6 +1,6 @@
-export class nivel3 extends Phaser.Scene{
+export class nivel2 extends Phaser.Scene{
     constructor(){
-        super({key: 'nivel3'})       
+        super({key: 'nivel2'})       
     }    
 
     FloatBetween = Phaser.Math;
@@ -14,17 +14,15 @@ export class nivel3 extends Phaser.Scene{
     gameOver = false;
     scoreText;
     crevasse;
-    finale;
 
     preload ()
     {   
-        this.load.image('sky3', 'assets/sky.png');
-        this.load.image('ground3', 'assets/platform1.png');
+        this.load.image('sky2', 'assets/background_layer_1.png');
+        this.load.image('ground2', 'assets/platform.png');
         this.load.image('star', 'assets/star.png');
         this.load.image('bomb', 'assets/bomb.png');
-        this.load.image('background1', 'assets/first.png');
-        this.load.image('background2', 'assets/forest.png');
-        this.load.image('final', 'assets/final.png');
+        this.load.image('background2', 'assets/background_layer_1.png')
+        this.load.image('background1', 'assets/forest.png')
         this.load.spritesheet('dude', 'assets/dude2.png', { frameWidth: 32, frameHeight: 48 });
         this.load.spritesheet('dude2', 'assets/marioSmall.png', { frameWidth: 34, frameHeight: 34 });
     }
@@ -36,31 +34,31 @@ export class nivel3 extends Phaser.Scene{
         this.crevasse = this.add.zone(600, 3200, 3200, 600);
         this.physics.world.enable(this.crevasse, Phaser.Physics.Arcade.STATIC_BODY);
         //  A simple background for our game
-        this.add.image(400, 300, 'sky3').setScrollFactor(0, 0);
+        this.add.image(400, 300, 'sky2').setScrollFactor(0, 0);
     
         //  The platforms group contains the ground and the 2 ledges we can jump on
         this.platforms = this.physics.add.staticGroup(
             {classType: Phaser.Physics.Arcade.Image,
-            defaultKey: 'ground3'
+            defaultKey: 'ground2'
         });
     
         //  Here we create the ground.
         //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
     
         //  Now let's create some ledges
-        this.platforms.create(0, 500, 'ground3'); 
-        this.platforms.create(300, 400, 'ground3');
-        this.platforms.create(450, 200, 'ground3');
-        this.platforms.create(500, 400, 'ground3');
-        this.platforms.create(1200, 450, 'ground3');
-        this.platforms.create(1500, 300, 'ground3');
-        this.platforms.create(1600, 600, 'ground3');
-        this.platforms.create(2000, 550, 'ground3');
-        this.platforms.create(2200, 400, 'ground3');
-        this.platforms.create(2400, 550, 'ground3');
-        this.platforms.create(2800, 500, 'ground3');
-        this.platforms.create(3000, 350, 'ground3');
-        this.platforms.create(3300, 150, 'ground3');
+        this.platforms.create(0, 300, 'ground2'); 
+        this.platforms.create(200, 500, 'ground2');
+        this.platforms.create(400, 150, 'ground2');
+        this.platforms.create(600, 350, 'ground2');
+        this.platforms.create(1000, 400, 'ground2');
+        this.platforms.create(1600, 250, 'ground2');
+        this.platforms.create(1400, 550, 'ground2');
+        this.platforms.create(1950, 500, 'ground2');
+        this.platforms.create(2200, 300, 'ground2');
+        this.platforms.create(2400, 550, 'ground2');
+        this.platforms.create(2700, 450, 'ground2');
+        this.platforms.create(2900, 300, 'ground2');
+        this.platforms.create(3000, 200, 'ground2');
     
         this.player2 = this.physics.add.sprite(50, 50, 'dude2');
         this.player2.setBounce(0.2);
