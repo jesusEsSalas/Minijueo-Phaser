@@ -1,4 +1,7 @@
+import menu from 'menu'
+
 var config = {
+    key : 'play',
     type: Phaser.AUTO,
     //cameras: [{bounds: {x: 0, y: 0, width: 1200, height: 600} }],
     width: 800,
@@ -12,11 +15,11 @@ var config = {
             height: 600
         }
     },
-    scene: {
+    scene: [menu, {
         preload: preload,
         create: create,
         update: update
-    }
+    }]
 };
 
 const { Between, FloatBetween } = Phaser.Math;
@@ -61,32 +64,28 @@ function create ()
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-    //platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
     //  Now let's create some ledges
-    /*platforms.create(600, 400, 'ground');
-    platforms.create(50, 250, 'ground');
-    platforms.create(750, 220, 'ground');*/
-    platforms.create(0 + Between(-50, 50), 256, 'ground');
-    platforms.create(600 + Between(-50, 50), 400, 'ground');
-    platforms.create(750 + Between(-50, 50), 224), 'ground';
-    platforms.create(1250 + Between(-50, 50), 320, 'ground');
-    platforms.create(1950 + Between(-50, 50), 256, 'ground');
-    platforms.create(2300 + Between(-50, 50), 400, 'ground');
-    platforms.create(2750 + Between(-50, 50), 224), 'ground';
-    platforms.create(3200 + Between(-50, 50), 320, 'ground');
-    platforms.create(300, 570, 'ground');
-    platforms.create(900, 570, 'ground');
-    platforms.create(400, 0, 'ground');
-    platforms.create(1000, 0, 'ground');
-    platforms.create(2200, 0, 'ground');
+    platforms.create(0, 300, 'ground'); 
+    platforms.create(200, 500, 'ground');
+    platforms.create(400, 150, 'ground');
+    platforms.create(600, 350, 'ground');
+    platforms.create(1000, 400, 'ground');
+    platforms.create(1600, 250, 'ground');
+    platforms.create(1400, 550, 'ground');
+    platforms.create(1950, 500, 'ground');
+    platforms.create(2200, 300, 'ground');
+    platforms.create(2400, 550, 'ground');
+    platforms.create(2700, 450, 'ground');
+    platforms.create(2900, 300, 'ground');
+    platforms.create(3000, 200, 'ground');
 
-    player2 = this.physics.add.sprite(50, 0, 'dude2');
+    player2 = this.physics.add.sprite(50, 50, 'dude2');
     player2.setBounce(0.2);
     player2.setCollideWorldBounds(true);
     
     // The player and its settings
-    player = this.physics.add.sprite(50, 0, 'dude')
+    player = this.physics.add.sprite(50, 50, 'dude')
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
@@ -147,8 +146,8 @@ function create ()
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
     stars = this.physics.add.group({
         key: 'star',
-        repeat: 35,
-        setXY: { x: 12, y: 0, stepX: 70 }
+        repeat: 11,
+        setXY: { x: 12, y: 5, stepX: 70 }
     });
 
     stars.children.iterate(function (child) {
@@ -180,9 +179,6 @@ function update ()
     if (gameOver) {
         return;
     }
-
-    const { blocked } = player.body;
-    const { blocked2 } = player2.body;
     
     if (cursors.left.isDown) {
         player.setVelocityX(-160);
@@ -299,5 +295,3 @@ function hitBomb (player, bomb)
  
     gameOver = true;
 }
-
-
