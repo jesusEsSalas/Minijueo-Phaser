@@ -1,7 +1,4 @@
-import menu from 'menu'
-
 var config = {
-    key : 'play',
     type: Phaser.AUTO,
     //cameras: [{bounds: {x: 0, y: 0, width: 1200, height: 600} }],
     width: 800,
@@ -15,11 +12,11 @@ var config = {
             height: 600
         }
     },
-    scene: [menu, {
+    scene: {
         preload: preload,
         create: create,
         update: update
-    }]
+    }
 };
 
 const { Between, FloatBetween } = Phaser.Math;
@@ -59,8 +56,8 @@ function create ()
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup(
         {classType: Phaser.Physics.Arcade.Image,
-        defaultKey: 'ground'}
-        );
+        defaultKey: 'ground'
+    });
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
@@ -219,7 +216,7 @@ function update ()
     }
 }
 
-function collectStar (player2, star)
+function collectStar (player, star)
 {
     star.disableBody(true, true);
 
@@ -237,7 +234,6 @@ function collectStar (player2, star)
         });
 
         var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-        var x = (player2.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
         
 
         var bomb = bombs.create(x, 16, 'bomb');
