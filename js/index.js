@@ -1,4 +1,5 @@
 import { nivel1 } from "./nivel1.js";
+import { nivel2 } from "./nivel2.js"
 import { nivel3 } from "./nivel3.js";
 
 var config = {
@@ -15,7 +16,7 @@ var config = {
             height: 600
         }
     },
-    scene: [nivel1, nivel3]/*{
+    scene: [nivel1, nivel2, nivel3]/*{
         preload: preload,
         create: create,
         update: update

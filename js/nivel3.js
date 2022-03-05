@@ -15,6 +15,8 @@ export class nivel3 extends Phaser.Scene{
     scoreText;
     crevasse;
     finale;
+    overlap1 = false;
+    overlap2 = false;
 
     preload ()
     {   
@@ -24,9 +26,10 @@ export class nivel3 extends Phaser.Scene{
         this.load.image('bomb', 'assets/bomb.png');
         this.load.image('background1', 'assets/first.png');
         this.load.image('background2', 'assets/forest.png');
-        this.load.image('final', 'assets/final.png');
-        this.load.spritesheet('dude', 'assets/dude2.png', { frameWidth: 32, frameHeight: 48 });
-        this.load.spritesheet('dude2', 'assets/marioSmall.png', { frameWidth: 34, frameHeight: 34 });
+        this.load.image('final3', 'assets/final.png');
+        this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+        this.load.spritesheet('dude2', 'assets/dude2.png', { frameWidth: 32, frameHeight: 48 });
+        this.load.audio('salto', 'assets/salto.wav');
     }
 
     create ()
@@ -57,10 +60,13 @@ export class nivel3 extends Phaser.Scene{
         this.platforms.create(1600, 600, 'ground3');
         this.platforms.create(2000, 550, 'ground3');
         this.platforms.create(2200, 400, 'ground3');
-        this.platforms.create(2400, 550, 'ground3');
         this.platforms.create(2800, 500, 'ground3');
-        this.platforms.create(3000, 350, 'ground3');
+        this.platforms.create(3000, 250, 'ground3');
         this.platforms.create(3300, 150, 'ground3');
+
+        let audio = this.sound.add('salto', {loop: false});
+        this.input.keyboard.on('keydown_UP', () => {
+            audio.play();});
     
         this.player2 = this.physics.add.sprite(50, 50, 'dude2');
         this.player2.setBounce(0.2);
@@ -131,6 +137,11 @@ export class nivel3 extends Phaser.Scene{
             repeat: 11,
             setXY: { x: 12, y: 5, stepX: 70 }
         });
+
+        this.finale = this.physics.add.group({
+            key: 'final3',
+            setXY: {x: 3300, y: 150}
+        });
     
         this.stars.children.iterate(function (child) {
             //  Give each star a slightly different bounce
@@ -146,12 +157,13 @@ export class nivel3 extends Phaser.Scene{
         this.physics.add.collider(this.player, this.platforms);
         this.physics.add.collider(this.stars, this.platforms);
         this.physics.add.collider(this.bombs, this.platforms);
+        this.physics.add.collider(this.finale, this.platforms);
+        this.physics.add.collider(this.player2, this.platforms);
     
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
         this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
         this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
-    
-        this.physics.add.collider(this.player2, this.platforms);
+            
         this.physics.add.overlap(this.player2, this.stars, this.collectStar, null, this);
         this.physics.add.collider(this.player2, this.bombs, this.hitBomb, null, this);
     }
@@ -207,7 +219,7 @@ export class nivel3 extends Phaser.Scene{
     
         //  Add and update the score
         this.score += 1;
-        this.scoreText.setText('Puntuacion: ' + score);
+        this.scoreText.setText('Puntuacion: ' + this.score);
     
         if (this.stars.countActive(true) === 0)
         {

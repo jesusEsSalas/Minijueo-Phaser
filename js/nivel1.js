@@ -1,4 +1,3 @@
-import { nivel3 } from "./nivel3.js";
 export class nivel1 extends Phaser.Scene{
     constructor(){
         super({key: 'nivel1'})       
@@ -143,7 +142,7 @@ export class nivel1 extends Phaser.Scene{
         this.finale = this.physics.add.group({
             key: 'final',
             setXY: {x: 3000, y: 200}
-        })
+        });
 
         this.stars.children.iterate(function (child) {
             //  Give each star a slightly different bounce
@@ -178,8 +177,8 @@ export class nivel1 extends Phaser.Scene{
             return;
         }
 
-        if(this.overlap === true && this.overlap2 === true) {
-            this.scene.start('nivel3');
+        if(this.overlap === true || this.overlap2 === true) {
+            this.scene.start('nivel2');
         }
         
         if (this.cursors.left.isDown) {
