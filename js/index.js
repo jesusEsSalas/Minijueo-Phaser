@@ -1,3 +1,5 @@
+import { nivel1 } from "./nivel1.js";
+
 var config = {
     type: Phaser.AUTO,
     //cameras: [{bounds: {x: 0, y: 0, width: 1200, height: 600} }],
@@ -7,19 +9,19 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 300 },
-            debug: false,
-            width: 3200,
-            height: 600
+            debug: false
+            /*width: 3200,
+            height: 600*/
         }
     },
-    scene: {
+    scene: [nivel1]/*{
         preload: preload,
         create: create,
         update: update
-    }
+    }*/
 };
 
-const { Between, FloatBetween } = Phaser.Math;
+/*const { Between, FloatBetween } = Phaser.Math;
 var player;
 var stars;
 var bombs;
@@ -28,11 +30,12 @@ var cursors;
 var score = 0;
 var gameOver = false;
 var scoreText;
-var crevasse;
+var crevasse;*/
 
 var game = new Phaser.Game(config);
 
-function preload ()
+
+/*function preload ()
 {
     this.load.image('sky', 'assets/forest.png');
     this.load.image('ground', 'assets/platform.png');
@@ -291,3 +294,4 @@ function hitBomb (player, bomb)
  
     gameOver = true;
 }
+*/
