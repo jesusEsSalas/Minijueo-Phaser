@@ -1,12 +1,15 @@
 var config = {
     type: Phaser.AUTO,
+    //cameras: [{bounds: {x: 0, y: 0, width: 1200, height: 600} }],
     width: 800,
     height: 600,
     physics: {
         default: 'arcade',
         arcade: {
             gravity: { y: 300 },
-            debug: false
+            debug: false,
+            width: 3200,
+            height: 600
         }
     },
     scene: {
@@ -16,6 +19,7 @@ var config = {
     }
 };
 
+const { Between, FloatBetween } = Phaser.Math;
 var player;
 var stars;
 var bombs;
@@ -24,46 +28,73 @@ var cursors;
 var score = 0;
 var gameOver = false;
 var scoreText;
+var crevasse;
 
 var game = new Phaser.Game(config);
 
 function preload ()
 {
-    this.load.image('sky', 'assets/sky.png');
+    this.load.image('sky', 'assets/forest.png');
     this.load.image('ground', 'assets/platform.png');
     this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
-    this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-    this.load.spritesheet('dude2', 'assets/dude2.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.image('background1', 'assets/background_layer_1.png')
+    this.load.image('background2', 'assets/forest.png')
+    this.load.spritesheet('dude', 'assets/dude2.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.spritesheet('dude2', 'assets/marioSmall.png', { frameWidth: 34, frameHeight: 34 });
 }
 
 function create ()
 {
+    this.physics.world.checkCollision.down = false;
+
+    crevasse = this.add.zone(600, 3200, 3200, 600);
+    this.physics.world.enable(crevasse, Phaser.Physics.Arcade.STATIC_BODY);
     //  A simple background for our game
-    this.add.image(400, 300, 'sky');
+    this.add.image(400, 300, 'sky').setScrollFactor(0, 0);
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
-    platforms = this.physics.add.staticGroup();
+    platforms = this.physics.add.staticGroup(
+        {classType: Phaser.Physics.Arcade.Image,
+        defaultKey: 'ground'}
+        );
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+    //platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
     //  Now let's create some ledges
-    platforms.create(600, 400, 'ground');
+    /*platforms.create(600, 400, 'ground');
     platforms.create(50, 250, 'ground');
-    platforms.create(750, 220, 'ground');
+    platforms.create(750, 220, 'ground');*/
+    platforms.create(0 + Between(-50, 50), 256, 'ground');
+    platforms.create(600 + Between(-50, 50), 400, 'ground');
+    platforms.create(750 + Between(-50, 50), 224), 'ground';
+    platforms.create(1250 + Between(-50, 50), 320, 'ground');
+    platforms.create(1950 + Between(-50, 50), 256, 'ground');
+    platforms.create(2300 + Between(-50, 50), 400, 'ground');
+    platforms.create(2750 + Between(-50, 50), 224), 'ground';
+    platforms.create(3200 + Between(-50, 50), 320, 'ground');
+    platforms.create(300, 570, 'ground');
+    platforms.create(900, 570, 'ground');
+    platforms.create(400, 0, 'ground');
+    platforms.create(1000, 0, 'ground');
+    platforms.create(2200, 0, 'ground');
 
-    player2 = this.physics.add.sprite(50, 450, 'dude2');
+    player2 = this.physics.add.sprite(50, 0, 'dude2');
     player2.setBounce(0.2);
     player2.setCollideWorldBounds(true);
     
     // The player and its settings
-    player = this.physics.add.sprite(100, 450, 'dude');
+    player = this.physics.add.sprite(50, 0, 'dude')
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
+
+    this.cameras.main.setBounds(0, 0, 3200, 600, true, true, true, false);
+    this.physics.world.setBounds(0, 0, 3200, 600, true, true, true, false)
+    this.cameras.main.startFollow(player);
 
     //  Our player animations, turning, walking left and walking right.
     this.anims.create({
@@ -116,7 +147,7 @@ function create ()
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
     stars = this.physics.add.group({
         key: 'star',
-        repeat: 11,
+        repeat: 35,
         setXY: { x: 12, y: 0, stepX: 70 }
     });
 
@@ -128,7 +159,7 @@ function create ()
     bombs = this.physics.add.group();
 
     //  The score
-    scoreText = this.add.text(16, 16, 'Puntuacion: 0', { fontSize: '32px', fill: '#000' });
+    scoreText = this.add.text(16, 16, 'Puntuacion: 0', { fontSize: '32px', fill: '#FFFF' });
 
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
@@ -149,6 +180,9 @@ function update ()
     if (gameOver) {
         return;
     }
+
+    const { blocked } = player.body;
+    const { blocked2 } = player2.body;
     
     if (cursors.left.isDown) {
         player.setVelocityX(-160);
