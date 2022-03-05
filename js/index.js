@@ -1,4 +1,5 @@
 import { nivel1 } from "./nivel1.js";
+import { nivel3 } from "./nivel3.js";
 
 var config = {
     type: Phaser.AUTO,
@@ -9,12 +10,12 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 300 },
-            debug: false
-            /*width: 3200,
-            height: 600*/
+            debug: false,
+            width: 3200,
+            height: 600
         }
     },
-    scene: [nivel1]/*{
+    scene: [nivel1, nivel3]/*{
         preload: preload,
         create: create,
         update: update
