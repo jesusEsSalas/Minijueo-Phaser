@@ -17,6 +17,7 @@ export class nivel3 extends Phaser.Scene{
     finale;
     overlap1 = false;
     overlap2 = false;
+    music;
 
     preload ()
     {   
@@ -30,10 +31,14 @@ export class nivel3 extends Phaser.Scene{
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
         this.load.spritesheet('dude2', 'assets/dude2.png', { frameWidth: 32, frameHeight: 48 });
         this.load.audio('salto', 'assets/salto.wav');
+        this.load.audio('music3', 'assets/music3.mp3');
     }
 
     create ()
     {
+        this.music = this.sound.add('music3');
+        this.music.play();
+
         this.physics.world.checkCollision.down = false;
     
         this.crevasse = this.add.zone(600, 3200, 3200, 600);
